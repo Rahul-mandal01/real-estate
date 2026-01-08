@@ -1,6 +1,6 @@
-client-rs/node_modules/*
+client/node_modules/*
 server/node_modules/*
-client-rs/.env
+client/.env
 server/.env
 server/dist/*
-client-rs/.next/*
+client/.next/*
