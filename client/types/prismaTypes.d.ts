@@ -1572,14 +1572,14 @@ export namespace Prisma {
 
   export type TenantCountOutputType = {
     properties: number
-    favorites: number
+    favourites: number
     applications: number
     leases: number
   }
 
   export type TenantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     properties?: boolean | TenantCountOutputTypeCountPropertiesArgs
-    favorites?: boolean | TenantCountOutputTypeCountFavoritesArgs
+    favourites?: boolean | TenantCountOutputTypeCountfavouritesArgs
     applications?: boolean | TenantCountOutputTypeCountApplicationsArgs
     leases?: boolean | TenantCountOutputTypeCountLeasesArgs
   }
@@ -1605,7 +1605,7 @@ export namespace Prisma {
   /**
    * TenantCountOutputType without action
    */
-  export type TenantCountOutputTypeCountFavoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TenantCountOutputTypeCountfavouritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PropertyWhereInput
   }
 
@@ -4426,7 +4426,7 @@ export namespace Prisma {
     email?: boolean
     phoneNumber?: boolean
     properties?: boolean | Tenant$propertiesArgs<ExtArgs>
-    favorites?: boolean | Tenant$favoritesArgs<ExtArgs>
+    favourites?: boolean | Tenant$favouritesArgs<ExtArgs>
     applications?: boolean | Tenant$applicationsArgs<ExtArgs>
     leases?: boolean | Tenant$leasesArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
@@ -4459,7 +4459,7 @@ export namespace Prisma {
   export type TenantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cognitoId" | "name" | "email" | "phoneNumber", ExtArgs["result"]["tenant"]>
   export type TenantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     properties?: boolean | Tenant$propertiesArgs<ExtArgs>
-    favorites?: boolean | Tenant$favoritesArgs<ExtArgs>
+    favourites?: boolean | Tenant$favouritesArgs<ExtArgs>
     applications?: boolean | Tenant$applicationsArgs<ExtArgs>
     leases?: boolean | Tenant$leasesArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
@@ -4471,7 +4471,7 @@ export namespace Prisma {
     name: "Tenant"
     objects: {
       properties: Prisma.$PropertyPayload<ExtArgs>[]
-      favorites: Prisma.$PropertyPayload<ExtArgs>[]
+      favourites: Prisma.$PropertyPayload<ExtArgs>[]
       applications: Prisma.$ApplicationPayload<ExtArgs>[]
       leases: Prisma.$LeasePayload<ExtArgs>[]
     }
@@ -4876,7 +4876,7 @@ export namespace Prisma {
   export interface Prisma__TenantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     properties<T extends Tenant$propertiesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    favorites<T extends Tenant$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favourites<T extends Tenant$favouritesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$favouritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     applications<T extends Tenant$applicationsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leases<T extends Tenant$leasesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5325,9 +5325,9 @@ export namespace Prisma {
   }
 
   /**
-   * Tenant.favorites
+   * Tenant.favourites
    */
-  export type Tenant$favoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Tenant$favouritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Property
      */
@@ -10386,7 +10386,7 @@ export namespace Prisma {
     email?: StringFilter<"Tenant"> | string
     phoneNumber?: StringFilter<"Tenant"> | string
     properties?: PropertyListRelationFilter
-    favorites?: PropertyListRelationFilter
+    favourites?: PropertyListRelationFilter
     applications?: ApplicationListRelationFilter
     leases?: LeaseListRelationFilter
   }
@@ -10398,7 +10398,7 @@ export namespace Prisma {
     email?: SortOrder
     phoneNumber?: SortOrder
     properties?: PropertyOrderByRelationAggregateInput
-    favorites?: PropertyOrderByRelationAggregateInput
+    favourites?: PropertyOrderByRelationAggregateInput
     applications?: ApplicationOrderByRelationAggregateInput
     leases?: LeaseOrderByRelationAggregateInput
   }
@@ -10413,7 +10413,7 @@ export namespace Prisma {
     email?: StringFilter<"Tenant"> | string
     phoneNumber?: StringFilter<"Tenant"> | string
     properties?: PropertyListRelationFilter
-    favorites?: PropertyListRelationFilter
+    favourites?: PropertyListRelationFilter
     applications?: ApplicationListRelationFilter
     leases?: LeaseListRelationFilter
   }, "id" | "cognitoId">
@@ -10757,7 +10757,7 @@ export namespace Prisma {
     manager: ManagerCreateNestedOneWithoutManagedPropertiesInput
     leases?: LeaseCreateNestedManyWithoutPropertyInput
     applications?: ApplicationCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
     tenants?: TenantCreateNestedManyWithoutPropertiesInput
   }
 
@@ -10784,7 +10784,7 @@ export namespace Prisma {
     managerCognitoId: string
     leases?: LeaseUncheckedCreateNestedManyWithoutPropertyInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
     tenants?: TenantUncheckedCreateNestedManyWithoutPropertiesInput
   }
 
@@ -10810,7 +10810,7 @@ export namespace Prisma {
     manager?: ManagerUpdateOneRequiredWithoutManagedPropertiesNestedInput
     leases?: LeaseUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -10837,7 +10837,7 @@ export namespace Prisma {
     managerCognitoId?: StringFieldUpdateOperationsInput | string
     leases?: LeaseUncheckedUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUncheckedUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -10970,7 +10970,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationCreateNestedManyWithoutTenantInput
     leases?: LeaseCreateNestedManyWithoutTenantInput
   }
@@ -10982,7 +10982,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyUncheckedCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutTenantInput
     leases?: LeaseUncheckedCreateNestedManyWithoutTenantInput
   }
@@ -10993,7 +10993,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUpdateManyWithoutTenantNestedInput
     leases?: LeaseUpdateManyWithoutTenantNestedInput
   }
@@ -11005,7 +11005,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUncheckedUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutTenantNestedInput
     leases?: LeaseUncheckedUpdateManyWithoutTenantNestedInput
   }
@@ -12033,9 +12033,9 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
   }
 
-  export type TenantCreateNestedManyWithoutFavoritesInput = {
-    create?: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput> | TenantCreateWithoutFavoritesInput[] | TenantUncheckedCreateWithoutFavoritesInput[]
-    connectOrCreate?: TenantCreateOrConnectWithoutFavoritesInput | TenantCreateOrConnectWithoutFavoritesInput[]
+  export type TenantCreateNestedManyWithoutfavouritesInput = {
+    create?: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput> | TenantCreateWithoutfavouritesInput[] | TenantUncheckedCreateWithoutfavouritesInput[]
+    connectOrCreate?: TenantCreateOrConnectWithoutfavouritesInput | TenantCreateOrConnectWithoutfavouritesInput[]
     connect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
   }
 
@@ -12059,9 +12059,9 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
   }
 
-  export type TenantUncheckedCreateNestedManyWithoutFavoritesInput = {
-    create?: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput> | TenantCreateWithoutFavoritesInput[] | TenantUncheckedCreateWithoutFavoritesInput[]
-    connectOrCreate?: TenantCreateOrConnectWithoutFavoritesInput | TenantCreateOrConnectWithoutFavoritesInput[]
+  export type TenantUncheckedCreateNestedManyWithoutfavouritesInput = {
+    create?: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput> | TenantCreateWithoutfavouritesInput[] | TenantUncheckedCreateWithoutfavouritesInput[]
+    connectOrCreate?: TenantCreateOrConnectWithoutfavouritesInput | TenantCreateOrConnectWithoutfavouritesInput[]
     connect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
   }
 
@@ -12175,16 +12175,16 @@ export namespace Prisma {
     deleteMany?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
   }
 
-  export type TenantUpdateManyWithoutFavoritesNestedInput = {
-    create?: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput> | TenantCreateWithoutFavoritesInput[] | TenantUncheckedCreateWithoutFavoritesInput[]
-    connectOrCreate?: TenantCreateOrConnectWithoutFavoritesInput | TenantCreateOrConnectWithoutFavoritesInput[]
-    upsert?: TenantUpsertWithWhereUniqueWithoutFavoritesInput | TenantUpsertWithWhereUniqueWithoutFavoritesInput[]
+  export type TenantUpdateManyWithoutfavouritesNestedInput = {
+    create?: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput> | TenantCreateWithoutfavouritesInput[] | TenantUncheckedCreateWithoutfavouritesInput[]
+    connectOrCreate?: TenantCreateOrConnectWithoutfavouritesInput | TenantCreateOrConnectWithoutfavouritesInput[]
+    upsert?: TenantUpsertWithWhereUniqueWithoutfavouritesInput | TenantUpsertWithWhereUniqueWithoutfavouritesInput[]
     set?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     disconnect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     delete?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     connect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
-    update?: TenantUpdateWithWhereUniqueWithoutFavoritesInput | TenantUpdateWithWhereUniqueWithoutFavoritesInput[]
-    updateMany?: TenantUpdateManyWithWhereWithoutFavoritesInput | TenantUpdateManyWithWhereWithoutFavoritesInput[]
+    update?: TenantUpdateWithWhereUniqueWithoutfavouritesInput | TenantUpdateWithWhereUniqueWithoutfavouritesInput[]
+    updateMany?: TenantUpdateManyWithWhereWithoutfavouritesInput | TenantUpdateManyWithWhereWithoutfavouritesInput[]
     deleteMany?: TenantScalarWhereInput | TenantScalarWhereInput[]
   }
 
@@ -12229,16 +12229,16 @@ export namespace Prisma {
     deleteMany?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
   }
 
-  export type TenantUncheckedUpdateManyWithoutFavoritesNestedInput = {
-    create?: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput> | TenantCreateWithoutFavoritesInput[] | TenantUncheckedCreateWithoutFavoritesInput[]
-    connectOrCreate?: TenantCreateOrConnectWithoutFavoritesInput | TenantCreateOrConnectWithoutFavoritesInput[]
-    upsert?: TenantUpsertWithWhereUniqueWithoutFavoritesInput | TenantUpsertWithWhereUniqueWithoutFavoritesInput[]
+  export type TenantUncheckedUpdateManyWithoutfavouritesNestedInput = {
+    create?: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput> | TenantCreateWithoutfavouritesInput[] | TenantUncheckedCreateWithoutfavouritesInput[]
+    connectOrCreate?: TenantCreateOrConnectWithoutfavouritesInput | TenantCreateOrConnectWithoutfavouritesInput[]
+    upsert?: TenantUpsertWithWhereUniqueWithoutfavouritesInput | TenantUpsertWithWhereUniqueWithoutfavouritesInput[]
     set?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     disconnect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     delete?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
     connect?: TenantWhereUniqueInput | TenantWhereUniqueInput[]
-    update?: TenantUpdateWithWhereUniqueWithoutFavoritesInput | TenantUpdateWithWhereUniqueWithoutFavoritesInput[]
-    updateMany?: TenantUpdateManyWithWhereWithoutFavoritesInput | TenantUpdateManyWithWhereWithoutFavoritesInput[]
+    update?: TenantUpdateWithWhereUniqueWithoutfavouritesInput | TenantUpdateWithWhereUniqueWithoutfavouritesInput[]
+    updateMany?: TenantUpdateManyWithWhereWithoutfavouritesInput | TenantUpdateManyWithWhereWithoutfavouritesInput[]
     deleteMany?: TenantScalarWhereInput | TenantScalarWhereInput[]
   }
 
@@ -13000,7 +13000,7 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type TenantCreateWithoutFavoritesInput = {
+  export type TenantCreateWithoutfavouritesInput = {
     cognitoId: string
     name: string
     email: string
@@ -13010,7 +13010,7 @@ export namespace Prisma {
     leases?: LeaseCreateNestedManyWithoutTenantInput
   }
 
-  export type TenantUncheckedCreateWithoutFavoritesInput = {
+  export type TenantUncheckedCreateWithoutfavouritesInput = {
     id?: number
     cognitoId: string
     name: string
@@ -13021,9 +13021,9 @@ export namespace Prisma {
     leases?: LeaseUncheckedCreateNestedManyWithoutTenantInput
   }
 
-  export type TenantCreateOrConnectWithoutFavoritesInput = {
+  export type TenantCreateOrConnectWithoutfavouritesInput = {
     where: TenantWhereUniqueInput
-    create: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput>
+    create: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput>
   }
 
   export type TenantCreateWithoutPropertiesInput = {
@@ -13031,7 +13031,7 @@ export namespace Prisma {
     name: string
     email: string
     phoneNumber: string
-    favorites?: PropertyCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationCreateNestedManyWithoutTenantInput
     leases?: LeaseCreateNestedManyWithoutTenantInput
   }
@@ -13042,7 +13042,7 @@ export namespace Prisma {
     name: string
     email: string
     phoneNumber: string
-    favorites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutTenantInput
     leases?: LeaseUncheckedCreateNestedManyWithoutTenantInput
   }
@@ -13161,20 +13161,20 @@ export namespace Prisma {
     leaseId?: IntNullableFilter<"Application"> | number | null
   }
 
-  export type TenantUpsertWithWhereUniqueWithoutFavoritesInput = {
+  export type TenantUpsertWithWhereUniqueWithoutfavouritesInput = {
     where: TenantWhereUniqueInput
-    update: XOR<TenantUpdateWithoutFavoritesInput, TenantUncheckedUpdateWithoutFavoritesInput>
-    create: XOR<TenantCreateWithoutFavoritesInput, TenantUncheckedCreateWithoutFavoritesInput>
+    update: XOR<TenantUpdateWithoutfavouritesInput, TenantUncheckedUpdateWithoutfavouritesInput>
+    create: XOR<TenantCreateWithoutfavouritesInput, TenantUncheckedCreateWithoutfavouritesInput>
   }
 
-  export type TenantUpdateWithWhereUniqueWithoutFavoritesInput = {
+  export type TenantUpdateWithWhereUniqueWithoutfavouritesInput = {
     where: TenantWhereUniqueInput
-    data: XOR<TenantUpdateWithoutFavoritesInput, TenantUncheckedUpdateWithoutFavoritesInput>
+    data: XOR<TenantUpdateWithoutfavouritesInput, TenantUncheckedUpdateWithoutfavouritesInput>
   }
 
-  export type TenantUpdateManyWithWhereWithoutFavoritesInput = {
+  export type TenantUpdateManyWithWhereWithoutfavouritesInput = {
     where: TenantScalarWhereInput
-    data: XOR<TenantUpdateManyMutationInput, TenantUncheckedUpdateManyWithoutFavoritesInput>
+    data: XOR<TenantUpdateManyMutationInput, TenantUncheckedUpdateManyWithoutfavouritesInput>
   }
 
   export type TenantScalarWhereInput = {
@@ -13225,7 +13225,7 @@ export namespace Prisma {
     location: LocationCreateNestedOneWithoutPropertiesInput
     leases?: LeaseCreateNestedManyWithoutPropertyInput
     applications?: ApplicationCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
     tenants?: TenantCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13251,7 +13251,7 @@ export namespace Prisma {
     locationId: number
     leases?: LeaseUncheckedCreateNestedManyWithoutPropertyInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
     tenants?: TenantUncheckedCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13329,7 +13329,7 @@ export namespace Prisma {
     manager: ManagerCreateNestedOneWithoutManagedPropertiesInput
     leases?: LeaseCreateNestedManyWithoutPropertyInput
     applications?: ApplicationCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
   }
 
   export type PropertyUncheckedCreateWithoutTenantsInput = {
@@ -13355,7 +13355,7 @@ export namespace Prisma {
     managerCognitoId: string
     leases?: LeaseUncheckedCreateNestedManyWithoutPropertyInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
   }
 
   export type PropertyCreateOrConnectWithoutTenantsInput = {
@@ -13568,7 +13568,7 @@ export namespace Prisma {
     manager: ManagerCreateNestedOneWithoutManagedPropertiesInput
     leases?: LeaseCreateNestedManyWithoutPropertyInput
     applications?: ApplicationCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
     tenants?: TenantCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13594,7 +13594,7 @@ export namespace Prisma {
     managerCognitoId: string
     leases?: LeaseUncheckedCreateNestedManyWithoutPropertyInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
     tenants?: TenantUncheckedCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13645,7 +13645,7 @@ export namespace Prisma {
     location: LocationCreateNestedOneWithoutPropertiesInput
     manager: ManagerCreateNestedOneWithoutManagedPropertiesInput
     leases?: LeaseCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
     tenants?: TenantCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13671,7 +13671,7 @@ export namespace Prisma {
     locationId: number
     managerCognitoId: string
     leases?: LeaseUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
     tenants?: TenantUncheckedCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13686,7 +13686,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyCreateNestedManyWithoutFavoritedByInput
     leases?: LeaseCreateNestedManyWithoutTenantInput
   }
 
@@ -13697,7 +13697,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyUncheckedCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
     leases?: LeaseUncheckedCreateNestedManyWithoutTenantInput
   }
 
@@ -13764,7 +13764,7 @@ export namespace Prisma {
     location?: LocationUpdateOneRequiredWithoutPropertiesNestedInput
     manager?: ManagerUpdateOneRequiredWithoutManagedPropertiesNestedInput
     leases?: LeaseUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -13790,7 +13790,7 @@ export namespace Prisma {
     locationId?: IntFieldUpdateOperationsInput | number
     managerCognitoId?: StringFieldUpdateOperationsInput | string
     leases?: LeaseUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUncheckedUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -13811,7 +13811,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUpdateManyWithoutFavoritedByNestedInput
     leases?: LeaseUpdateManyWithoutTenantNestedInput
   }
 
@@ -13822,7 +13822,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUncheckedUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
     leases?: LeaseUncheckedUpdateManyWithoutTenantNestedInput
   }
 
@@ -13879,7 +13879,7 @@ export namespace Prisma {
     location: LocationCreateNestedOneWithoutPropertiesInput
     manager: ManagerCreateNestedOneWithoutManagedPropertiesInput
     applications?: ApplicationCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantCreateNestedManyWithoutfavouritesInput
     tenants?: TenantCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13905,7 +13905,7 @@ export namespace Prisma {
     locationId: number
     managerCognitoId: string
     applications?: ApplicationUncheckedCreateNestedManyWithoutPropertyInput
-    favoritedBy?: TenantUncheckedCreateNestedManyWithoutFavoritesInput
+    favoritedBy?: TenantUncheckedCreateNestedManyWithoutfavouritesInput
     tenants?: TenantUncheckedCreateNestedManyWithoutPropertiesInput
   }
 
@@ -13920,7 +13920,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationCreateNestedManyWithoutTenantInput
   }
 
@@ -13931,7 +13931,7 @@ export namespace Prisma {
     email: string
     phoneNumber: string
     properties?: PropertyUncheckedCreateNestedManyWithoutTenantsInput
-    favorites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
+    favourites?: PropertyUncheckedCreateNestedManyWithoutFavoritedByInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutTenantInput
   }
 
@@ -14027,7 +14027,7 @@ export namespace Prisma {
     location?: LocationUpdateOneRequiredWithoutPropertiesNestedInput
     manager?: ManagerUpdateOneRequiredWithoutManagedPropertiesNestedInput
     applications?: ApplicationUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -14053,7 +14053,7 @@ export namespace Prisma {
     locationId?: IntFieldUpdateOperationsInput | number
     managerCognitoId?: StringFieldUpdateOperationsInput | string
     applications?: ApplicationUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUncheckedUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -14074,7 +14074,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUpdateManyWithoutTenantNestedInput
   }
 
@@ -14085,7 +14085,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     properties?: PropertyUncheckedUpdateManyWithoutTenantsNestedInput
-    favorites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
@@ -14296,7 +14296,7 @@ export namespace Prisma {
     leaseId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type TenantUpdateWithoutFavoritesInput = {
+  export type TenantUpdateWithoutfavouritesInput = {
     cognitoId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -14306,7 +14306,7 @@ export namespace Prisma {
     leases?: LeaseUpdateManyWithoutTenantNestedInput
   }
 
-  export type TenantUncheckedUpdateWithoutFavoritesInput = {
+  export type TenantUncheckedUpdateWithoutfavouritesInput = {
     id?: IntFieldUpdateOperationsInput | number
     cognitoId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -14317,7 +14317,7 @@ export namespace Prisma {
     leases?: LeaseUncheckedUpdateManyWithoutTenantNestedInput
   }
 
-  export type TenantUncheckedUpdateManyWithoutFavoritesInput = {
+  export type TenantUncheckedUpdateManyWithoutfavouritesInput = {
     id?: IntFieldUpdateOperationsInput | number
     cognitoId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -14330,7 +14330,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    favorites?: PropertyUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUpdateManyWithoutTenantNestedInput
     leases?: LeaseUpdateManyWithoutTenantNestedInput
   }
@@ -14341,7 +14341,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
-    favorites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
+    favourites?: PropertyUncheckedUpdateManyWithoutFavoritedByNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutTenantNestedInput
     leases?: LeaseUncheckedUpdateManyWithoutTenantNestedInput
   }
@@ -14397,7 +14397,7 @@ export namespace Prisma {
     location?: LocationUpdateOneRequiredWithoutPropertiesNestedInput
     leases?: LeaseUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -14423,7 +14423,7 @@ export namespace Prisma {
     locationId?: IntFieldUpdateOperationsInput | number
     leases?: LeaseUncheckedUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUncheckedUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -14492,7 +14492,7 @@ export namespace Prisma {
     manager?: ManagerUpdateOneRequiredWithoutManagedPropertiesNestedInput
     leases?: LeaseUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
   }
 
   export type PropertyUncheckedUpdateWithoutTenantsInput = {
@@ -14518,7 +14518,7 @@ export namespace Prisma {
     managerCognitoId?: StringFieldUpdateOperationsInput | string
     leases?: LeaseUncheckedUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
   }
 
   export type PropertyUncheckedUpdateManyWithoutTenantsInput = {
@@ -14704,7 +14704,7 @@ export namespace Prisma {
     manager?: ManagerUpdateOneRequiredWithoutManagedPropertiesNestedInput
     leases?: LeaseUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUpdateManyWithoutPropertiesNestedInput
   }
 
@@ -14730,7 +14730,7 @@ export namespace Prisma {
     managerCognitoId?: StringFieldUpdateOperationsInput | string
     leases?: LeaseUncheckedUpdateManyWithoutPropertyNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutPropertyNestedInput
-    favoritedBy?: TenantUncheckedUpdateManyWithoutFavoritesNestedInput
+    favoritedBy?: TenantUncheckedUpdateManyWithoutfavouritesNestedInput
     tenants?: TenantUncheckedUpdateManyWithoutPropertiesNestedInput
   }
 
