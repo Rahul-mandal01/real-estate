@@ -8,9 +8,9 @@ import { authMiddleware } from "./middleware/authMiddleware.js";
 /* ROUTE IMPORT */
 import tenantRoutes from "./routes/tenantRoutes.js";
 import managerRoutes from "./routes/managerRoutes.js";
-// import propertyRoutes from "./routes/propertyRoutes";
-// import leaseRoutes from "./routes/leaseRoutes";
-// import applicationRoutes from "./routes/applicationRoutes";
+import propertyRoutes from "./routes/propertyRoutes.js";
+import leaseRoutes from "./routes/leaseRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -28,9 +28,9 @@ app.get("/", (req, res) => {
   res.send("This is home route");
 });
 
-// app.use("/applications", applicationRoutes);
-// app.use("/properties", propertyRoutes);
-// app.use("/leases", leaseRoutes);
+app.use("/applications", applicationRoutes);
+app.use("/properties", propertyRoutes);
+app.use("/leases", leaseRoutes);
 app.use("/tenants", authMiddleware(["tenant"]), tenantRoutes);
 app.use("/managers", authMiddleware(["manager"]), managerRoutes);
 
