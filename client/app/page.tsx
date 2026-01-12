@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 import Landing from "./(nondashboard)/landing/page";
 
 export default function Home() {
