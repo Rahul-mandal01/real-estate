@@ -48,7 +48,6 @@ export const api = createApi({
               : `/tenants/${user.userId}`;
 
           let userDetailsResponse = await fetchWithBQ(endpoint);
-          console.log("userDetailsResponse", userDetailsResponse);
 
           // if user doesn't exist, create new user
           if (
@@ -174,7 +173,7 @@ export const api = createApi({
       { cognitoId: string; propertyId: number }
     >({
       query: ({ cognitoId, propertyId }) => ({
-        url: `tenants/${cognitoId}/favourites/${propertyId}`,
+        url: `tenants/${cognitoId}/favorites/${propertyId}`,
         method: "POST",
       }),
       invalidatesTags: (result) => [
@@ -183,8 +182,8 @@ export const api = createApi({
       ],
       async onQueryStarted(_, { queryFulfilled }) {
         await withToast(queryFulfilled, {
-          success: "Added to favourites!!",
-          error: "Failed to add to favourites",
+          success: "Added to favorites!!",
+          error: "Failed to add to favorites",
         });
       },
     }),
@@ -194,7 +193,7 @@ export const api = createApi({
       { cognitoId: string; propertyId: number }
     >({
       query: ({ cognitoId, propertyId }) => ({
-        url: `tenants/${cognitoId}/favourites/${propertyId}`,
+        url: `tenants/${cognitoId}/favorites/${propertyId}`,
         method: "DELETE",
       }),
       invalidatesTags: (result) => [
@@ -203,8 +202,8 @@ export const api = createApi({
       ],
       async onQueryStarted(_, { queryFulfilled }) {
         await withToast(queryFulfilled, {
-          success: "Removed from favourites!",
-          error: "Failed to remove from favourites.",
+          success: "Removed from favorites!",
+          error: "Failed to remove from favorites.",
         });
       },
     }),
