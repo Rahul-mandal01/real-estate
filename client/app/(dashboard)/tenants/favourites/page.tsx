@@ -1,16 +1,16 @@
 "use client";
 
-// import Card from "@/components/Card";
-// import Header from "@/components/Header";
-// import Loading from "@/components/Loading";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import Loading from "@/components/Loading";
 import {
   useGetAuthUserQuery,
-  // useGetPropertiesQuery,
+  useGetPropertiesQuery,
   useGetTenantQuery,
 } from "@/state/api";
 import React from "react";
 
-const favourites = () => {
+const Favorites = () => {
   const { data: authUser } = useGetAuthUserQuery();
   const { data: tenant } = useGetTenantQuery(
     authUser?.cognitoInfo?.userId || "",
@@ -19,21 +19,21 @@ const favourites = () => {
     }
   );
 
-  // const {
-  //   data: favoriteProperties,
-  //   isLoading,
-  //   error,
-  // } = useGetPropertiesQuery(
-  //   { favoriteIds: tenant?.favourites?.map((fav: { id: number }) => fav.id) },
-  //   { skip: !tenant?.favourites || tenant?.favourites.length === 0 }
-  // );
+  const {
+    data: favoriteProperties,
+    isLoading,
+    error,
+  } = useGetPropertiesQuery(
+    { favoriteIds: tenant?.favorites?.map((fav: { id: number }) => fav.id) },
+    { skip: !tenant?.favorites || tenant?.favorites.length === 0 }
+  );
 
-  // if (isLoading) return <Loading />;
-  // if (error) return <div>Error loading favourites</div>;
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error loading favorites</div>;
 
   return (
     <div className="dashboard-container">
-      {/* <Header
+      <Header
         title="Favorited Properties"
         subtitle="Browse and manage your saved property listings"
       />
@@ -43,7 +43,7 @@ const favourites = () => {
             key={property.id}
             property={property}
             isFavorite={true}
-            onFavoriteToggle={() => {}}
+            onFavoriteToggle={() => { }}
             showFavoriteButton={false}
             propertyLink={`/tenants/residences/${property.id}`}
           />
@@ -51,9 +51,9 @@ const favourites = () => {
       </div>
       {(!favoriteProperties || favoriteProperties.length === 0) && (
         <p>You don&lsquo;t have any favorited properties</p>
-      )} */}
+      )}
     </div>
   );
 };
 
-export default favourites;
+export default Favorites;
