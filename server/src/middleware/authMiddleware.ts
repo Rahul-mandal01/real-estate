@@ -19,15 +19,21 @@ declare global {
 
 export const authMiddleware = (allowedRoles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
     try {
+      const token = req.headers.authorization?.split(" ")[1];
+
+      if (!token) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+
       const decoded = jwt.decode(token) as DecodedToken;
+
+      if (!decoded) {
+        res.status(400).json({ message: "Invalid token" });
+        return;
+      }
+
       const userRole = decoded["custom:role"] || "";
       req.user = {
         id: decoded.sub,
@@ -39,12 +45,11 @@ export const authMiddleware = (allowedRoles: string[]) => {
         res.status(403).json({ message: "Access Denied" });
         return;
       }
-    } catch (err) {
-      console.error("Failed to decode token:", err);
-      res.status(400).json({ message: "Invalid token" });
-      return;
-    }
 
-    next();
+      next();
+    } catch (err) {
+      console.error("Error in auth middleware:", err);
+      res.status(400).json({ message: "Invalid token" });
+    }
   };
 };
