@@ -12,6 +12,16 @@ import propertyRoutes from "./routes/propertyRoutes.js";
 import leaseRoutes from "./routes/leaseRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+  : ['http://localhost:3000'];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  methods: 'GET,POST,PUT,PATCH,DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
+};
+
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -21,7 +31,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 /* ROUTES */
 app.get("/", (req, res) => {
