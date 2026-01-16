@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 /* ROUTE IMPORT */
 import tenantRoutes from "./routes/tenantRoutes.js";
@@ -11,6 +13,10 @@ import managerRoutes from "./routes/managerRoutes.js";
 import propertyRoutes from "./routes/propertyRoutes.js";
 import leaseRoutes from "./routes/leaseRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
@@ -22,8 +28,9 @@ const corsOptions = {
   allowedHeaders: 'Content-Type, Authorization',
 };
 
+console.log("Allowed Origins:", allowedOrigins);
+
 /* CONFIGURATIONS */
-dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(helmet());
