@@ -23,20 +23,19 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   : ['http://localhost:3000'];
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg =
-        "The CORS policy for this site does not " +
-        "allow access from the specified Origin.";
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  methods: "GET,POST,PUT,PATCH,DELETE",
-  allowedHeaders: "Content-Type, Authorization",
-  credentials: true,
+  origin: function (origin, callback) {
+      // allow server-to-server & tools like Postman
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 console.log("Allowed Origins:", allowedOrigins);
@@ -50,6 +49,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 /* ROUTES */
 app.get("/", (req, res) => {
