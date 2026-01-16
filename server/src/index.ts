@@ -4,8 +4,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 /* ROUTE IMPORT */
 import tenantRoutes from "./routes/tenantRoutes.js";
@@ -14,31 +12,32 @@ import propertyRoutes from "./routes/propertyRoutes.js";
 import leaseRoutes from "./routes/leaseRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
   : ['http://localhost:3000'];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-      // allow server-to-server & tools like Postman
-      if (!origin) return callback(null, true);
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) => {
+    // allow server-to-server & tools like Postman
+    if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-console.log("Allowed Origins:", allowedOrigins);
+// console.log("Allowed Origins:", allowedOrigins);
 
 /* CONFIGURATIONS */
 const app = express();
@@ -49,7 +48,6 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 /* ROUTES */
 app.get("/", (req, res) => {
