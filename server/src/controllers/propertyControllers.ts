@@ -6,11 +6,24 @@ import type { Location } from "@prisma/client";
 import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
 
+
+
 const prisma = new PrismaClient();
-const AWS_REGION = process.env.AWS_REGION || "ap-south-1";
+const AWS_REGION = process.env.AWS_REGION;
+const ACCESS_KEY_ID= process.env.AWS_ACCESS_KEY_ID;
+const  SECRET_ACCESS_KEY= process.env.AWS_SECRET_ACCESS_KEY;
+
+if (!AWS_REGION || !ACCESS_KEY_ID || !SECRET_ACCESS_KEY) {
+  throw new Error("Missing required environment variables");
+}
+
 
 const s3Client = new S3Client({
     region: AWS_REGION,
+    credentials:{
+      accessKeyId: ACCESS_KEY_ID!,
+      secretAccessKey: SECRET_ACCESS_KEY!
+    }
 });
 
 export const getProperties = async (
