@@ -7,7 +7,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
 
 const prisma = new PrismaClient();
-const AWS_REGION = process.env.AWS_REGION || "us-east-1";
+const AWS_REGION = process.env.AWS_REGION || "ap-south-1";
 
 const s3Client = new S3Client({
     region: AWS_REGION,
