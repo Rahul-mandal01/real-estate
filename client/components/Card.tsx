@@ -1,7 +1,7 @@
 import { Bath, Bed, Heart, House, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Card = ({
     property,
@@ -43,6 +43,7 @@ const Card = ({
                     <button
                         className="absolute bottom-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"
                         onClick={onFavoriteToggle}
+                        title="favourite"
                     >
                         <Heart
                             className={`w-5 h-5 ${isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"
