@@ -14,11 +14,14 @@ import { FiltersState } from ".";
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-    prepareHeaders: async (headers) => {
-      const session = await fetchAuthSession();
-      const { idToken } = session.tokens ?? {};
-      if (idToken) {
-        headers.set("Authorization", `Bearer ${idToken}`);
+    prepareHeaders: async (headers, { endpoint }) => {
+      const publicEndpoints = ["getProperties", "getProperty"];
+      if (!publicEndpoints.includes(endpoint)) {
+        const session = await fetchAuthSession();
+        const { idToken } = session.tokens ?? {};
+        if (idToken) {
+          headers.set("Authorization", `Bearer ${idToken}`);
+        }
       }
       return headers;
     },
@@ -34,13 +37,19 @@ export const api = createApi({
     "Applications",
   ],
   endpoints: (build) => ({
-    getAuthUser: build.query<User, void>({
+    getAuthUser: build.query<User | null, void>({
       queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
         try {
           const session = await fetchAuthSession();
           const { idToken } = session.tokens ?? {};
+
+          // If no token, user is not logged in. Return null.
+          if (!idToken) {
+            return { data: null };
+          }
+
           const user = await getCurrentUser();
-          const userRole = idToken?.payload["custom:role"] as string;
+          const userRole = idToken.payload["custom:role"] as string;
 
           const endpoint =
             userRole === "manager"
@@ -62,6 +71,10 @@ export const api = createApi({
             );
           }
 
+          if (userDetailsResponse.error) {
+            throw new Error("Failed to fetch or create user details.");
+          }
+
           return {
             data: {
               cognitoInfo: { ...user },
@@ -70,7 +83,8 @@ export const api = createApi({
             },
           };
         } catch (error: any) {
-          return { error: error.message || "Could not fetch user data" };
+          console.error("Error in getAuthUser queryFn:", error);
+          return { data: null };
         }
       },
     }),
