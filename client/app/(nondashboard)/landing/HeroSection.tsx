@@ -31,13 +31,13 @@ const HeroSection = () => {
         dispatch(
           setFilters({
             location: trimmedQuery,
-            coordinates: [lat, lng],
+            coordinates: [lng, lat],
           })
         );
         const params = new URLSearchParams({
           location: trimmedQuery,
           lat: lat.toString(),
-          lng: lng,
+          lng: lng.toString(),
         });
         router.push(`/search?${params.toString()}`);
       }
@@ -78,6 +78,11 @@ const HeroSection = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by city, neighborhood or address"
               className="w-full max-w-lg rounded-none rounded-l-xl border-none bg-white h-12"
+              onKeyDown={(e)=> {
+                if(e.key == "Enter"){
+                  handleLocationSearch();
+                }
+              }}
             />
             <Button
               onClick={handleLocationSearch}
