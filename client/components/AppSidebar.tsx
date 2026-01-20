@@ -73,6 +73,7 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
                                     <button
                                         className="hover:bg-gray-100 p-2 rounded-md"
                                         onClick={() => toggleSidebar()}
+                                        title="sidebar"
                                     >
                                         <X className="h-6 w-6 text-gray-600" />
                                     </button>
@@ -81,6 +82,7 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
                                 <button
                                     className="hover:bg-gray-100 p-2 rounded-md"
                                     onClick={() => toggleSidebar()}
+                                    title="sidebar"
                                 >
                                     <Menu className="h-6 w-6 text-gray-600" />
                                 </button>
