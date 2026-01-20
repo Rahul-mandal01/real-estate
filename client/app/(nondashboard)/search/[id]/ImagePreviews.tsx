@@ -2,17 +2,17 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ImagePreviews = ({ images }: ImagePreviewsProps) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const handlePrev = () => {
-        setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+        setCurrentImageIndex((prev) => Math.max(0, prev - 1));
     };
 
     const handleNext = () => {
-        setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+        setCurrentImageIndex((prev) => Math.min(images.length - 1, prev + 1));
     };
 
     return (
@@ -32,20 +32,24 @@ const ImagePreviews = ({ images }: ImagePreviewsProps) => {
                     />
                 </div>
             ))}
-            <button
-                onClick={handlePrev}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-primary-700 bg-opacity-50 p-2 rounded-full focus:outline-none focus:ring focus:ring-secondary-300"
-                aria-label="Previous image"
-            >
-                <ChevronLeft className="text-white" />
-            </button>
-            <button
-                onClick={handleNext}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-primary-700 bg-opacity-50 p-2 rounded-full focus:outline-none focus:ring focus:ring-secondary-300"
-                aria-label="Previous image"
-            >
-                <ChevronRight className="text-white" />
-            </button>
+            {currentImageIndex > 0 && (
+                <button
+                    onClick={handlePrev}
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-primary-700 bg-opacity-50 p-2 rounded-full focus:outline-none focus:ring focus:ring-secondary-300 z-10"
+                    aria-label="Previous image"
+                >
+                    <ChevronLeft className="text-white" />
+                </button>
+            )}
+            {currentImageIndex < images.length - 1 && (
+                <button
+                    onClick={handleNext}
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-primary-700 bg-opacity-50 p-2 rounded-full focus:outline-none focus:ring focus:ring-secondary-300 z-10"
+                    aria-label="Next image"
+                >
+                    <ChevronRight className="text-white" />
+                </button>
+            )}
         </div>
     );
 };
