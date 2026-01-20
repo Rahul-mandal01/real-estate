@@ -19,24 +19,27 @@ const SearchPage = () => {
     );
 
     useEffect(() => {
-        const initialFilters = Array.from(searchParams.entries()).reduce(
-            (acc: any, [key, value]) => {
-                if (key === "priceRange" || key === "squareFeet") {
-                    acc[key] = value.split(",").map((v) => (v === "" ? null : Number(v)));
-                } else if (key === "coordinates") {
-                    acc[key] = value.split(",").map(Number);
-                } else {
-                    acc[key] = value === "any" ? null : value;
-                }
+        const initialFilters: any = {};
+        const lat = searchParams.get("lat");
+        const lng = searchParams.get("lng");
 
-                return acc;
-            },
-            {}
-        );
+        if (lat && lng) {
+            initialFilters.coordinates = [Number(lng), Number(lat)];
+        }
+
+        for (const [key, value] of searchParams.entries()) {
+            if (key === 'lat' || key === 'lng') continue;
+
+            if (key === "priceRange" || key === "squareFeet") {
+                initialFilters[key] = value.split(",").map((v) => (v === "" ? null : Number(v)));
+            } else {
+                initialFilters[key] = value === "any" ? null : value;
+            }
+        }
 
         const cleanedFilters = cleanParams(initialFilters);
         dispatch(setFilters(cleanedFilters));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div
