@@ -103,6 +103,7 @@ const FiltersFull = () => {
                                 }))
                             }
                             className="rounded-l-xl rounded-r-none border-r-0"
+
                         />
                         <Button
                             onClick={handleLocationSearch}
