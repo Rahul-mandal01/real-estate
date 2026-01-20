@@ -10,9 +10,11 @@ import { Property } from "@/types/prismaTypes";
 import Card from "@/components/Card";
 import React from "react";
 import CardCompact from "@/components/CardCompact";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const Listings = () => {
-    const { data: authUser } = useGetAuthUserQuery();
+    const { user } = useAuthenticator((context) => [context.user]);
+    const { data: authUser } = useGetAuthUserQuery(undefined, { skip: !user });
     const { data: tenant } = useGetTenantQuery(
         authUser?.cognitoInfo?.userId || "",
         {
