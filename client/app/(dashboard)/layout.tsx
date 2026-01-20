@@ -15,6 +15,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if(authLoading) return;
     if (authUser) {
       const userRole = authUser.userRole?.toLowerCase();
       if (
@@ -24,14 +25,14 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         router.push(
           userRole === "manager"
             ? "/managers/properties"
-            : "/tenants/favorites",
+            : "/tenants/favourites",
           { scroll: false }
         );
       } else {
         setIsLoading(false);
       }
     }
-  }, [authUser, router, pathname]);
+  }, [authUser, authLoading, router, pathname]);
 
   if (authLoading || isLoading) return <>Loading...</>;
   if (!authUser?.userRole) return null;
