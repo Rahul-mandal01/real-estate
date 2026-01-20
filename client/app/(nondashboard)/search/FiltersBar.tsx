@@ -119,6 +119,10 @@ const FiltersBar = () => {
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                         className="w-40 rounded-l-xl rounded-r-none border-primary-400 border-r-0"
+                        onKeyDown={(e) => {
+                            if(e.key == "Enter")
+                                handleLocationSearch();
+                        }}
                     />
                     <Button
                         onClick={handleLocationSearch}
