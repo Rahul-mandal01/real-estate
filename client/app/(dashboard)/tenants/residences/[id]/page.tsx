@@ -27,6 +27,7 @@ import {
     MapPin,
     User,
 } from "lucide-react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import React from "react";
 
@@ -82,12 +83,20 @@ const ResidenceCard = ({
     property: Property;
     currentLease: Lease;
 }) => {
+    console.log("Current Lease:", property, "rahul",  currentLease);
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 flex-1 flex flex-col justify-between">
             {/* Header */}
             <div className="flex gap-5">
-                <div className="w-64 h-32 object-cover bg-slate-500 rounded-xl"></div>
-
+                <div className="relative w-64 h-48">
+                                    <Image
+                                        src={property?.photoUrls?.[0] || "/placeholder.jpg"}
+                                        alt={property.name}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="rounded-xl"
+                                    />
+                                </div>
                 <div className="flex flex-col justify-between">
                     <div>
                         <div className="bg-green-500 w-fit text-white px-4 py-1 rounded-full text-sm font-semibold">
@@ -98,7 +107,7 @@ const ResidenceCard = ({
                         <div className="flex items-center mb-2">
                             <MapPin className="w-5 h-5 mr-1" />
                             <span>
-                                {property.location.city}, {property.location.country}
+                                {property.location.city.toLowerCase()}, {property.location.country}
                             </span>
                         </div>
                     </div>
