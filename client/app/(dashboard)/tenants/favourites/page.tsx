@@ -8,7 +8,6 @@ import {
   useGetPropertiesQuery,
   useGetTenantQuery,
 } from "@/state/api";
-import React from "react";
 
 const Favorites = () => {
   const { data: authUser } = useGetAuthUserQuery();
