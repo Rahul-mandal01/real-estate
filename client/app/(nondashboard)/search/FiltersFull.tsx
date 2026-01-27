@@ -57,9 +57,9 @@ const FiltersFull = () => {
     const handleAmenityChange = (amenity: AmenityEnum) => {
         setLocalFilters((prev) => ({
             ...prev,
-            amenities: prev.amenities.includes(amenity)
-                ? prev.amenities.filter((a) => a !== amenity)
-                : [...prev.amenities, amenity],
+            amenities: (prev.amenities ?? []).includes(amenity)
+                ? (prev.amenities ?? []).filter((a) => a !== amenity)
+                : [...(prev.amenities ?? []), amenity],
         }));
     };
 
@@ -158,6 +158,7 @@ const FiltersFull = () => {
                                 priceRange: value as [number, number],
                             }))
                         }
+                        rangeColor="bg-gray-400"
                     />
                     <div className="flex justify-between mt-2">
                         <span>${localFilters.priceRange[0] ?? 0}</span>
@@ -225,7 +226,7 @@ const FiltersFull = () => {
                                 squareFeet: value as [number, number],
                             }))
                         }
-                        className="[&>.bar]:bg-primary-700"
+                        rangeColor="bg-gray-400"
                     />
                     <div className="flex justify-between mt-2">
                         <span>{localFilters.squareFeet[0] ?? 0} sq ft</span>
@@ -242,7 +243,7 @@ const FiltersFull = () => {
                                 key={amenity}
                                 className={cn(
                                     "flex items-center space-x-2 p-2 border rounded-lg hover:cursor-pointer",
-                                    localFilters.amenities.includes(amenity as AmenityEnum)
+                                    (localFilters.amenities ?? []).includes(amenity as AmenityEnum)
                                         ? "border-black"
                                         : "border-gray-200"
                                 )}
