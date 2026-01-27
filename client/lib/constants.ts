@@ -35,12 +35,10 @@ export enum AmenityEnum {
   Refrigerator = "Refrigerator",
   Pool = "Pool",
   Gym = "Gym",
-  Parking = "Parking",
-  PetsAllowed = "PetsAllowed",
   WiFi = "WiFi",
 }
 
-export const AmenityIcons: Record<AmenityEnum, LucideIcon> = {
+export const AmenityIcons: Record<string, LucideIcon> = {
   WasherDryer: Waves,
   AirConditioning: Thermometer,
   Dishwasher: Waves,
