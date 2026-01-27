@@ -95,7 +95,11 @@ export const getProperties = async (
 
     if (amenities && amenities !== "any") {
       const amenitiesArray = (amenities as string).split(",");
-      whereConditions.push(Prisma.sql`p.amenities @> ${amenitiesArray}`);
+      whereConditions.push(
+        Prisma.sql`p.amenities @> ${Prisma.raw(
+          `ARRAY[${amenitiesArray.map((a) => `'${a}'::"Amenity"`).join(", ")}]`
+        )}`
+      );
     }
 
     if (availableFrom && availableFrom !== "any") {
@@ -118,14 +122,13 @@ export const getProperties = async (
     if (latitude && longitude) {
       const lat = parseFloat(latitude as string);
       const lng = parseFloat(longitude as string);
-      const radiusInKilometers = 1000;
-      const degrees = radiusInKilometers / 111; // Converts kilometers to degrees
+      const radiusInMeters = 10000 * 10000; // 1000km
 
       whereConditions.push(
         Prisma.sql`ST_DWithin(
-          l.coordinates::geometry,
-          ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326),
-          ${degrees}
+          l.coordinates,
+          ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography,
+          ${radiusInMeters}
         )`
       );
     }
@@ -210,6 +213,15 @@ export const createProperty = async (
 ): Promise<void> => {
   try {
     const files = req.files as Express.Multer.File[];
+    const { propertyData: propertyDataString } = req.body;
+
+    if (!propertyDataString) {
+      res.status(400).json({ message: "propertyData is missing" });
+      return;
+    }
+
+    const parsedData = JSON.parse(propertyDataString);
+
     const {
       address,
       city,
@@ -218,7 +230,7 @@ export const createProperty = async (
       postalCode,
       managerCognitoId,
       ...propertyData
-    } = req.body;
+    } = parsedData;
 
     const photoUrls = await Promise.all(
       files.map(async (file) => {
@@ -238,28 +250,46 @@ export const createProperty = async (
       })
     );
 
-    const geocodingUrl = `https://nominatim.openstreetmap.org/search?${new URLSearchParams(
-      {
-        street: address,
-        city,
-        country,
-        postalcode: postalCode,
-        format: "json",
-        limit: "1",
-      }
+    let longitude = 0;
+    let latitude = 0;
+
+    // --- Start of new robust geocoding logic ---
+    const userAgent = "RealEstateApp/1.0";
+    
+    // First attempt: full address
+    const fullAddress = `${address}, ${city}, ${state}, ${postalCode}, ${country}`;
+    let geocodingUrl = `https://nominatim.openstreetmap.org/search?${new URLSearchParams(
+      { q: fullAddress, format: "json", limit: "1" }
     ).toString()}`;
-    const geocodingResponse = await axios.get(geocodingUrl, {
-      headers: {
-        "User-Agent": "RealEstateApp (rahulra16809999@gmail.com)",
-      },
+    
+    let geocodingResponse = await axios.get(geocodingUrl, {
+      headers: { "User-Agent": userAgent },
     });
-    const [longitude, latitude] =
-      geocodingResponse.data[0]?.lon && geocodingResponse.data[0]?.lat
-        ? [
-            parseFloat(geocodingResponse.data[0]?.lon),
-            parseFloat(geocodingResponse.data[0]?.lat),
-          ]
-        : [0, 0];
+
+    // If first attempt fails, try with just city, state, country
+    if (!geocodingResponse.data || geocodingResponse.data.length === 0) {
+      console.warn(`Geocoding failed for full address: ${fullAddress}. Trying broader search.`);
+      const broaderAddress = `${city}, ${state}, ${country}`;
+      geocodingUrl = `https://nominatim.openstreetmap.org/search?${new URLSearchParams(
+        { q: broaderAddress, format: "json", limit: "1" }
+      ).toString()}`;
+      
+      geocodingResponse = await axios.get(geocodingUrl, {
+        headers: { "User-Agent": userAgent },
+      });
+    }
+
+    // Process the final response
+    if (geocodingResponse.data && geocodingResponse.data.length > 0) {
+      const result = geocodingResponse.data[0];
+      if (result.lon && result.lat) {
+        longitude = parseFloat(result.lon);
+        latitude = parseFloat(result.lat);
+      }
+    } else {
+      console.warn(`All geocoding attempts failed for address.`);
+    }
+    // --- End of new robust geocoding logic ---
 
     // create location
     const [location] = await prisma.$queryRaw<Location[]>`
@@ -280,22 +310,6 @@ export const createProperty = async (
         photoUrls,
         locationId: location.id,
         managerCognitoId,
-        amenities:
-          typeof propertyData.amenities === "string"
-            ? propertyData.amenities.split(",")
-            : [],
-        highlights:
-          typeof propertyData.highlights === "string"
-            ? propertyData.highlights.split(",")
-            : [],
-        isPetsAllowed: propertyData.isPetsAllowed === "true",
-        isParkingIncluded: propertyData.isParkingIncluded === "true",
-        pricePerMonth: parseFloat(propertyData.pricePerMonth),
-        securityDeposit: parseFloat(propertyData.securityDeposit),
-        applicationFee: parseFloat(propertyData.applicationFee),
-        beds: parseInt(propertyData.beds),
-        baths: parseFloat(propertyData.baths),
-        squareFeet: parseInt(propertyData.squareFeet),
       },
       include: {
         location: true,
