@@ -12,8 +12,8 @@ export const propertySchema = z.object({
   photoUrls: z
     .array(z.instanceof(File))
     .min(1, "At least one photo is required"),
-  amenities: z.string().min(1, "Amenities are required"),
-  highlights: z.string().min(1, "Highlights are required"),
+  amenities: z.array(z.string()).min(1, "At least one amenity is required"),
+  highlights: z.array(z.string()).min(1, "At least one highlight is required"),
   beds: z.coerce.number().int().min(0, "Number of beds must be a positive integer.").int(),
   baths: z.coerce.number().min(0, "Number of baths must be a positive number.").int(),
   squareFeet: z.coerce.number().min(0, "Square feet must be a positive integer.").int(),
