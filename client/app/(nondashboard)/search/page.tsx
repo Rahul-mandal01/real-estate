@@ -3,7 +3,7 @@
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { useAppDispatch, useAppSelector } from "@/state/redux";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import FiltersBar from "./FiltersBar";
 import FiltersFull from "./FiltersFull";
 import { cleanParams } from "@/lib/utils";
@@ -22,16 +22,21 @@ const SearchPage = () => {
         const initialFilters: any = {};
         const lat = searchParams.get("lat");
         const lng = searchParams.get("lng");
+        const coordinates = searchParams.get("coordinates");
 
         if (lat && lng) {
             initialFilters.coordinates = [Number(lng), Number(lat)];
+        } else if (coordinates) {
+            initialFilters.coordinates = coordinates.split(",").map(Number);
         }
 
         for (const [key, value] of searchParams.entries()) {
-            if (key === 'lat' || key === 'lng') continue;
+            if (key === 'lat' || key === 'lng' || key === 'coordinates') continue;
 
             if (key === "priceRange" || key === "squareFeet") {
                 initialFilters[key] = value.split(",").map((v) => (v === "" ? null : Number(v)));
+            } else if (key === "amenities") {
+                initialFilters[key] = value.split(',');
             } else {
                 initialFilters[key] = value === "any" ? null : value;
             }
@@ -39,7 +44,7 @@ const SearchPage = () => {
 
         const cleanedFilters = cleanParams(initialFilters);
         dispatch(setFilters(cleanedFilters));
-    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [searchParams, dispatch]);
 
     return (
         <div
