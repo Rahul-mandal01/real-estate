@@ -9,10 +9,14 @@ import { AmenityEnum, HighlightEnum, PropertyTypeEnum } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const NewProperty = () => {
     const [createProperty] = useCreatePropertyMutation();
     const { data: authUser } = useGetAuthUserQuery();
+    const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(propertySchema),
@@ -25,8 +29,8 @@ const NewProperty = () => {
             isPetsAllowed: true,
             isParkingIncluded: true,
             photoUrls: [],
-            amenities: "",
-            highlights: "",
+            amenities: [],
+            highlights: [],
             beds: 1,
             baths: 1,
             squareFeet: 1000,
@@ -43,23 +47,50 @@ const NewProperty = () => {
             throw new Error("No manager ID found");
         }
 
+        setIsSubmitting(true);
+
         const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-            if (key === "photoUrls") {
-                const files = value as File[];
-                files.forEach((file: File) => {
-                    formData.append("photos", file);
-                });
-            } else if (Array.isArray(value)) {
-                formData.append(key, JSON.stringify(value));
-            } else {
-                formData.append(key, String(value));
+
+        // Separate files from the rest of the data
+        const { photoUrls, ...propertyData } = data;
+
+        if (propertyData.isParkingIncluded) {
+            if (!propertyData.amenities.includes("Parking")) {
+                propertyData.amenities.push("Parking");
             }
-        });
+        }
+        if (propertyData.isPetsAllowed) {
+            if (!propertyData.amenities.includes("PetsAllowed")) {
+                propertyData.amenities.push("PetsAllowed");
+            }
+        }
 
-        formData.append("managerCognitoId", authUser.cognitoInfo.userId);
+        // Append files
+        if (photoUrls && photoUrls.length > 0) {
+            const files = photoUrls as File[];
+            files.forEach((file: File) => {
+                formData.append("photos", file);
+            });
+        }
 
-        await createProperty(formData);
+        // Append the rest of the data as a JSON string
+        formData.append(
+            "propertyData",
+            JSON.stringify({
+                ...propertyData,
+                managerCognitoId: authUser.cognitoInfo.userId,
+            })
+        );
+
+        try {
+            const response = await createProperty(formData).unwrap();
+            console.log("Create Property Response:", response);
+            router.push("/managers/properties");
+        } catch (error) {
+            console.error("Error creating property:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -68,11 +99,11 @@ const NewProperty = () => {
                 title="Add New Property"
                 subtitle="Create a new property listing with detailed information"
             />
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-white rounded-xl p-6 max-w-400">
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="p-4 space-y-10"
+                        className="p-4 space-y-10 "
                     >
                         {/* Basic Information */}
                         <div>
@@ -169,7 +200,7 @@ const NewProperty = () => {
                                 <CustomFormField
                                     name="amenities"
                                     label="Amenities"
-                                    type="select"
+                                    type="multi-select"
                                     options={Object.keys(AmenityEnum).map((amenity) => ({
                                         value: amenity,
                                         label: amenity,
@@ -178,7 +209,7 @@ const NewProperty = () => {
                                 <CustomFormField
                                     name="highlights"
                                     label="Highlights"
-                                    type="select"
+                                    type="multi-select"
                                     options={Object.keys(HighlightEnum).map((highlight) => ({
                                         value: highlight,
                                         label: highlight,
@@ -226,9 +257,10 @@ const NewProperty = () => {
 
                         <Button
                             type="submit"
+                            disabled={isSubmitting}
                             className="bg-primary-700 text-white w-full mt-8"
                         >
-                            Create Property
+                            {isSubmitting ? "Creating..." : "Create Property"}
                         </Button>
                     </form>
                 </Form>
