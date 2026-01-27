@@ -5,11 +5,12 @@ export interface FiltersState {
   beds: string;
   baths: string;
   propertyType: string;
-  amenities: string[];
+  amenities?: string[];
   availableFrom: string;
   priceRange: [number, number] | [null, null];
   squareFeet: [number, number] | [null, null];
-  coordinates: [number, number];
+  coordinates?: [number, number];
+  favoriteIds?: number[];
 }
 
 interface InitialStateTypes {
@@ -29,6 +30,7 @@ export const initialState: InitialStateTypes = {
     priceRange: [null, null],
     squareFeet: [null, null],
     coordinates: [-118.25, 34.05],
+    favoriteIds: [],
   },
   isFiltersFullOpen: false,
   viewMode: "grid",
