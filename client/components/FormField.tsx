@@ -23,7 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Edit, X, Plus } from "lucide-react";
+import { Edit, X, Plus, Check } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { registerPlugin } from "filepond";
 import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -42,6 +43,7 @@ interface FormFieldProps {
   | "textarea"
   | "number"
   | "select"
+  | "multi-select"
   | "switch"
   | "password"
   | "file"
@@ -106,13 +108,42 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
                 <SelectItem
                   key={option.value}
                   value={option.value}
-                  className={`cursor-pointer hover:!bg-gray-100 hover:!text-customgreys-darkGrey`}
+                  className={`cursor-pointer !hover:bg-gray-100 !hover:text-customgreys-darkGrey`}
                 >
                   {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+        );
+      case "multi-select":
+        return (
+          <div className="flex flex-wrap gap-y-5 gap-x-10 border border-gray-200 rounded-md p-4">
+            {options?.map((option) => (
+              <div key={option.value} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`${name}-${option.value}`}
+                  checked={(field.value || []).includes(option.value)}
+                  onCheckedChange={(checked) => {
+                    const currentValues = field.value || [];
+                    if (checked) {
+                      field.onChange([...currentValues, option.value]);
+                    } else {
+                      field.onChange(
+                        currentValues.filter((v: string) => v !== option.value)
+                      );
+                    }
+                  }}
+                />
+                <FormLabel
+                  htmlFor={`${name}-${option.value}`}
+                  className="cursor-pointer !hover:bg-gray-100 !hover:text-customgreys-darkGrey text-gray-600 text-sm"
+                >
+                  {option.label}
+                </FormLabel>
+              </div>
+            ))}
+          </div>
         );
       case "switch":
         return (
