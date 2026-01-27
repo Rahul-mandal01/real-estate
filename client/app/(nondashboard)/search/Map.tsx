@@ -10,37 +10,67 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN as string;
 
 const Map = () => {
     const mapContainerRef = useRef(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null);
     const filters = useAppSelector((state) => state.global.filters);
+    const isFiltersFullOpen = useAppSelector(
+        (state) => state.global.isFiltersFullOpen
+    );
     const {
         data: properties,
         isLoading,
         isError,
     } = useGetPropertiesQuery(filters);
 
+    // Initialize map
     useEffect(() => {
-        if (isLoading || isError || !properties) return;
+        if (isLoading || isError || !properties || !mapContainerRef.current) return;
 
         const map = new mapboxgl.Map({
-            container: mapContainerRef.current!,
+            container: mapContainerRef.current,
             style: "mapbox://styles/rahul-mandal01/cmk8h54yf008701scel9sbo44",
             center: filters.coordinates || [-74.5, 40],
             zoom: 9,
         });
 
-        properties.forEach((property) => {
-            const marker = createPropertyMarker(property, map);
-            const markerElement = marker.getElement();
-            const path = markerElement.querySelector("path[fill='#3FB1CE']");
-            if (path) path.setAttribute("fill", "#000000");
-        });
+        mapRef.current = map;
 
-        const resizeMap = () => {
-            if (map) setTimeout(() => map.resize(), 700);
-        };
-        resizeMap();
+        map.on("load", () => {
+            properties.forEach((property) => {
+                const marker = createPropertyMarker(property, map);
+                const markerElement = marker.getElement();
+                const path = markerElement.querySelector("path[fill='#3FB1CE']");
+                if (path) path.setAttribute("fill", "#000000");
+            });
+
+            // Resize map after it's fully loaded
+            setTimeout(() => {
+                try {
+                    map.resize();
+                } catch (err) {
+                    console.error("Error resizing map:", err);
+                }
+            }, 700);
+        });
 
         return () => map.remove();
     }, [isLoading, isError, properties, filters.coordinates]);
+
+    // Resize map when FiltersFull visibility changes
+    useEffect(() => {
+        if (!mapRef.current) return;
+
+        const resizeMap = () => {
+            try {
+                mapRef.current?.resize();
+            } catch (err) {
+                console.error("Error resizing map:", err);
+            }
+        };
+
+        // Add small delay to allow DOM to update
+        const timeoutId = setTimeout(resizeMap, 300);
+        return () => clearTimeout(timeoutId);
+    }, [isFiltersFullOpen]);
 
     if (isLoading) return <>Loading...</>;
     if (isError || !properties) return <div>Failed to fetch properties</div>;
