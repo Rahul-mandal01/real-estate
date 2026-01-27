@@ -9,9 +9,9 @@ import {
     useGetAuthUserQuery,
     useUpdateApplicationStatusMutation,
 } from "@/state/api";
-import { CircleCheckBig, Download, File, Hospital } from "lucide-react";
+import { CircleCheckBig, Download, Hospital } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Applications = () => {
     const { data: authUser } = useGetAuthUserQuery();
@@ -61,14 +61,27 @@ const Applications = () => {
                     <TabsTrigger value="approved">Approved</TabsTrigger>
                     <TabsTrigger value="denied">Denied</TabsTrigger>
                 </TabsList>
-                {["all", "pending", "approved", "denied"].map((tab) => (
-                    <TabsContent key={tab} value={tab} className="mt-5 w-full">
-                        {filteredApplications
-                            .filter(
-                                (application) =>
-                                    tab === "all" || application.status.toLowerCase() === tab
-                            )
-                            .map((application) => (
+                {["all", "pending", "approved", "denied"].map((tab) => {
+                    const tabApplications = filteredApplications.filter(
+                        (application) =>
+                            tab === "all" || application.status.toLowerCase() === tab
+                    );
+
+                    return (
+                        <TabsContent key={tab} value={tab} className="mt-5 w-375">
+                            {tabApplications.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-16 text-center">
+                                    <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                                        No Applications
+                                    </h3>
+                                    <p className="text-gray-500 max-w-md">
+                                        {tab === "all"
+                                            ? "You don't have any applications yet. Once tenants apply to your properties, they will appear here."
+                                            : `You don't have any ${tab} applications.`}
+                                    </p>
+                                </div>
+                            ) : (
+                                tabApplications.map((application) => (
                                 <ApplicationCard
                                     key={application.id}
                                     application={application}
@@ -85,7 +98,6 @@ const Applications = () => {
                                                 }`}
                                         >
                                             <div className="flex flex-wrap items-center">
-                                                <File className="w-5 h-5 mr-2 flex shrink-0" />
                                                 <span className="mr-2">
                                                     Application submitted on{" "}
                                                     {new Date(
@@ -163,9 +175,11 @@ const Applications = () => {
                                         </div>
                                     </div>
                                 </ApplicationCard>
-                            ))}
-                    </TabsContent>
-                ))}
+                                ))
+                            )}
+                        </TabsContent>
+                    );
+                })}
             </Tabs>
         </div>
     );
